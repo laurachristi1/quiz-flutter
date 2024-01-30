@@ -14,7 +14,7 @@ class _QuizState extends State<Quiz> {
   bool? isCorrect;
   final List<Map<String, dynamic>> questions = [
     {
-      'questions': 'Qual é o tubarao mais violento do mundo?',
+      'questions': 'Qual é o Tubarão mais violento do mundo?',
       'answers': [
         'Tubarão-branco',
         'Tubarão-martelo',
@@ -30,7 +30,7 @@ class _QuizState extends State<Quiz> {
     },
     {
       'questions': 'Qual a Expectativa de vida de uma Baleia-azul?',
-      'answers': ['60- 70 anos', '70-80 anos', '80-90 anos', '90-100 anos'],
+      'answers': ['60-70 anos', '70-80 anos', '80-90 anos', '90-100 anos'],
       'correctAnswer': '80-90 anos'
     }
   ];
@@ -39,28 +39,30 @@ class _QuizState extends State<Quiz> {
       setState(() {
         currentQuestionIndex++;
       });
-    } else {
-      //adc para acabar
-    }
+    }  
   }
 
   void handleAnswer(String answer) {
     setState(() {
-      selectedAnswer == answer;
+      selectedAnswer = answer;
       isCorrect = answer == questions[currentQuestionIndex]['correctAnswer'];
-    });
-
-    Future.delayed(Duration(seconds: 2), () {
-      selectedAnswer = null;
-      isCorrect = null;
-      if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
+      if (!isCorrect!) {
+        currentQuestionIndex = 0;
       } else {
-        //fazer algo aqui
+        Future.delayed(Duration(milliseconds: 300), () {
+          setState(() {
+            selectedAnswer = null;
+            isCorrect = null;
+            if (currentQuestionIndex < questions.length - 1) {
+              currentQuestionIndex++;
+            } else {
+              
+            }
+          });
+        });
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +77,7 @@ class _QuizState extends State<Quiz> {
       body: Column(
         children: [
           Container(
+            padding: const EdgeInsets.all(16),
             color: Colors.deepPurple[50],
             width: double.infinity,
             height: 400,
